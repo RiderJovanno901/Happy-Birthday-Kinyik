@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HBD Bestie! 🍵🐾</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #e4efe0;
+            background-image: radial-gradient(#b5cfa8 2.5px, transparent 2.5px), radial-gradient(#b5cfa8 2.5px, #e4efe0 2.5px);
+            background-size: 38px 38px;
+            background-position: 0 0, 19px 19px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #3b522e;
+            overflow-x: hidden;
+        }
+
+        .card {
+            background: #fffdf7;
+            border: 4px solid #7aa363;
+            border-radius: 34px;
+            padding: 28px 22px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 10px 0 #7aa363, 0 18px 30px rgba(59, 82, 46, 0.22);
+            text-align: center;
+            display: none;
+            animation: muncul 0.35s ease;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        @keyframes muncul {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: #d6e8cb;
+            color: #3b522e;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px dashed #7aa363;
+            margin-bottom: 12px;
+        }
+
+        .sticker {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 14px auto;
+            background: #f2f8ee;
+            border: 3.5px solid #7aa363;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .kucing {
+            animation: joget 1.2s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes joget {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1.04, 0.95) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-9px) scale(0.96, 1.05) rotate(3deg);
+            }
+        }
+
+        .tag {
+            background: #435e34;
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 11px;
+            border-radius: 12px;
+            margin-top: 2px;
+        }
+
+        h1 {
+            font-size: 1.48rem;
+            margin-bottom: 8px;
+            color: #2f4423;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 16px;
+            color: #526e42;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 3px solid #c3dcb5;
+            border-radius: 18px;
+            background: #f6faf3;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            outline: none;
+            color: #3b522e;
+        }
+
+        .btn {
+            background: #7aa363;
+            color: #fff;
+            border: 3px solid #4e6e3c;
+            padding: 11px 26px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #4e6e3c;
+            transition: 0.15s;
+        }
+
+        .btn:hover {
+            background: #688f52;
+            transform: translateY(-2px);
+        }
+
+        .runaway {
+            position: relative;
+            height: 105px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #btn-no {
+            background: #e87a7a;
+            border-color: #a84444;
+            box-shadow: 0 5px 0 #a84444;
+            position: relative;
+            transition: 0.15s;
+        }
+
+        .pill {
+            display: inline-block;
+            background: #d6e8cb;
+            border: 2px solid #7aa363;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin: 10px 0 16px 0;
+        }
+
+        .secret {
+            background: #f1f7ed;
+            border: 2px dashed #7aa363;
+            border-radius: 18px;
+            padding: 14px;
+            font-size: 0.88rem;
+            margin-bottom: 16px;
+        }
+    </style>
+    <script>
+        var data = {};
+        function show(id) {
+            var c = document.querySelectorAll('.card');
+            for (var i = 0; i < c.length; i++) c[i].classList.remove('active');
+            document.getElementById(id).classList.add('active');
+        }
+        function login() {
+            var n = document.getElementById('nama').value.trim();
+            if (!n) {alert('Isi nama panggilanmu dulu yaa bestie! 🐾'); return;}
+            data.nama = n;
+            document.getElementById('out-nama').textContent = n;
+            show('s2');
+        }
+        function nextQ(inputId, nextScreen) {
+            var v = document.getElementById(inputId).value.trim();
+            if (!v) {alert('Dijawab dulu dong yaa 😸'); return;}
+            data[inputId] = v;
+            show(nextScreen);
+        }
+        function kabur() {
+            var b = document.getElementById('btn-no');
+            b.style.transform = 'translate(' + (Math.floor(Math.random() * 160) - 80) + 'px,' + (Math.floor(Math.random() * 100) - 50) + 'px)';
+        }
+        function pilihMau() {
+            data.q4 = 'Mau banget!! 🎁';
+            show('s4e');
+        }
+
+        function kirimDanLanjut() {
+            var btn = document.getElementById('btn-end');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Terkirim! 🍵";
+            }
+
+            var j1 = (document.getElementById('in-q1') && document.getElementById('in-q1').value.trim()) ||
+                (typeof data !== 'undefined' && (data.q0 || data.q1)) || "-";
+            var j2 = (document.getElementById('in-q2') && document.getElementById('in-q2').value.trim()) ||
+                (typeof data !== 'undefined' && (data.q1 || data.q2)) || "-";
+            var j3 = (document.getElementById('in-q3') && document.getElementById('in-q3').value.trim()) ||
+                (typeof data !== 'undefined' && (data.q2 || data.q3)) || "-";
+            var j4 = (document.getElementById('f-q4') && document.getElementById('f-q4').value) ||
+                (typeof data !== 'undefined' && (data.q3 || data.q4)) || "Mau banget!!";
+            var j5 = (document.getElementById('f-q5') && document.getElementById('f-q5').value) ||
+                (typeof data !== 'undefined' && data.rate) || "10";
+
+            var formUrl = "https://google.com";
+
+            var isiData = new URLSearchParams();
+            isiData.append("entry.148108591", j1);
+            isiData.append("entry.1591433828", j2);
+            isiData.append("entry.321488557", j3);
+            isiData.append("entry.1433543580", j4);
+            isiData.append("entry.1233300849", j5);
+
+            // Kirim POST diam-diam ke Google Form kamu tanpa membuka tab/aplikasi Google
+            fetch(formUrl, {
+                method: "POST",
+                mode: "no-cors",
+                body: isiData
+            }).catch(function () { });
+
+            // Langsung lanjut ke tampilan matcha penutup (s5)
+            setTimeout(function () {
+                show('s5');
+            }, 600);
+        }
+
+        var selesai = kirimDanLanjut;
+        var kirimKeGoogle = kirimDanLanjut;
+
+
+
+    </script>
+</head>
+
+<body>
+
+    <form name="jawaban-ultah" method="POST" data-netlify="true" hidden>
+        <input type="hidden" name="form-name" value="jawaban-ultah" />
+        <input type="text" name="nama_sahabat" /><input type="text" name="perasaan_hari_ini" />
+        <input type="text" name="wish_tahun_depan" /><input type="text" name="lagi_kepengen" />
+        <input type="text" name="mau_kado_lagi" /><input type="text" name="rating_happy" />
+    </form>
+
+    <!-- TAMPILAN 1 -->
+    <div class="card active" id="s1">
+        <div class="badge">🍵 MATCHA EDITION 🐾</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="26,41 30,23 41,35" fill="#ffb3c6" />
+                <polygon points="74,41 70,23 59,35" fill="#ffb3c6" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="30" cy="62" rx="6" ry="3.5" fill="#ff9ebb" />
+                <ellipse cx="70" cy="62" rx="6" ry="3.5" fill="#ff9ebb" />
+                <circle cx="37" cy="53" r="5" fill="#3b522e" />
+                <circle cx="35" cy="51" r="1.8" fill="#fff" />
+                <circle cx="63" cy="53" r="5" fill="#3b522e" />
+                <circle cx="61" cy="51" r="1.8" fill="#fff" />
+                <path d="M43,63 Q46.5,67 50,63 Q53.5,67 57,63" fill="none" stroke="#3b522e" stroke-width="2.5"
+                    stroke-linecap="round" />
+            </svg>
+            <div class="tag">Hewwo Bestie! 🐾</div>
+        </div>
+        <h1>Halooo! Login Dulu Yaa 🍵</h1>
+        <p>Ketik nama panggilanmu buat buka kejutan gemoy hari ini!</p>
+        <input type="text" id="nama" placeholder="Ketik namamu di sini..." />
+        <button type="button" class="btn" onclick="login()">Masuk ✨</button>
+    </div>
+
+    <!-- TAMPILAN 2 -->
+    <div class="card" id="s2">
+        <div class="badge">🎉 LEVEL UP DAY! 🎂</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="41,28 50,6 59,28" fill="#7aa363" stroke="#3b522e" stroke-width="2.5" />
+                <circle cx="50" cy="6" r="3.5" fill="#ffd166" />
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <path d="M32,53 Q37,46 42,53" fill="none" stroke="#3b522e" stroke-width="3" stroke-linecap="round" />
+                <path d="M58,53 Q63,46 68,53" fill="none" stroke="#3b522e" stroke-width="3" stroke-linecap="round" />
+                <ellipse cx="50" cy="65" rx="7" ry="8" fill="#ff758f" stroke="#3b522e" stroke-width="2" />
+            </svg>
+            <div class="tag">Happy Happy Cat 🎉</div>
+        </div>
+        <h1>Happy Birthday, <span id="out-nama">Bestie</span>! 🎂</h1>
+        <p>Selamat ulang tahun!! Semoga harimu se-manis es matcha latte & selalu happy lompat-lompat kayak kucing ini!
+            💚</p>
+        <button type="button" class="btn" onclick="show('s3')">Lanjut Liat Wish 🌿</button>
+    </div>
+
+    <!-- TAMPILAN 3 -->
+    <div class="card" id="s3">
+        <div class="badge">✨ MAKE A WISH ✨</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <circle cx="37" cy="53" r="5" fill="#3b522e" />
+                <circle cx="63" cy="53" r="5" fill="#3b522e" />
+                <path d="M44,64 Q50,70 56,64" fill="none" stroke="#3b522e" stroke-width="2.5" stroke-linecap="round" />
+                <ellipse cx="28" cy="76" rx="8" ry="6" fill="#fff" stroke="#3b522e" stroke-width="2.5" />
+                <ellipse cx="72" cy="76" rx="8" ry="6" fill="#fff" stroke="#3b522e" stroke-width="2.5" />
+            </svg>
+            <div class="tag">Bongo Mochi Cat 🥁</div>
+        </div>
+        <h1>Doa & Wish Untukmu ✨</h1>
+        <p>Semoga panjang umur, sehat selalu, dilancarkan semua urusan & kuliahnya, makin glowing, dan semua wishlist
+            tercapai! 🐾💚</p>
+        <button type="button" class="btn" onclick="show('s4a')">Jawab Pertanyaan 📝</button>
+    </div>
+
+    <!-- TAMPILAN 4A -->
+    <div class="card" id="s4a">
+        <div class="badge">📝 QNA 1 / 5</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#ffd166" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#ffd166" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#ffe599" stroke="#3b522e" stroke-width="3" />
+                <circle cx="37" cy="53" r="6" fill="#fff" stroke="#3b522e" stroke-width="2" />
+                <circle cx="37" cy="53" r="3" fill="#000" />
+                <circle cx="63" cy="53" r="4.5" fill="#fff" stroke="#3b522e" stroke-width="2" />
+                <circle cx="63" cy="53" r="2" fill="#000" />
+                <ellipse cx="50" cy="65" rx="3.5" ry="4.5" fill="#ff758f" />
+            </svg>
+            <div class="tag">Huh? Mochi Cat 🤨</div>
+        </div>
+        <h1>Pertanyaan 1/5 🍵</h1>
+        <p><strong>Hai, hepibesdei yaa, gimana perasaanmu hari ini ?</strong></p>
+        <textarea id="q1" rows="3" placeholder="Spill perasaanmu hari ini..."></textarea>
+        <button type="button" class="btn" onclick="nextQ('q1', 's4b')">Lanjut ➡️</button>
+    </div>
+
+    <!-- TAMPILAN 4B -->
+    <div class="card" id="s4b">
+        <div class="badge">🌿 QNA 2 / 5</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <path d="M32,51 L42,54" stroke="#3b522e" stroke-width="3" stroke-linecap="round" />
+                <path d="M68,51 L58,54" stroke="#3b522e" stroke-width="3" stroke-linecap="round" />
+                <path d="M44,65 Q50,61 56,65" fill="none" stroke="#3b522e" stroke-width="2.5" />
+                <circle cx="22" cy="76" r="7" fill="#8ac926" />
+            </svg>
+            <div class="tag">Smudge Mochi 🥗</div>
+        </div>
+        <h1>Pertanyaan 2/5 🌿</h1>
+        <p><strong>Wish nya apa nih buat kamu tahun depan ?</strong></p>
+        <textarea id="q2" rows="3" placeholder="Tulis wish kamu buat tahun depan..."></textarea>
+        <button type="button" class="btn" onclick="nextQ('q2', 's4c')">Lanjut ➡️</button>
+    </div>
+
+    <!-- TAMPILAN 4C -->
+    <div class="card" id="s4c">
+        <div class="badge">🍰 QNA 3 / 5</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#f4e2b8" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#f4e2b8" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#f4e2b8" stroke="#3b522e" stroke-width="3" />
+                <circle cx="37" cy="51" r="4.5" fill="#3b522e" />
+                <circle cx="63" cy="51" r="4.5" fill="#3b522e" />
+                <ellipse cx="50" cy="65" rx="9" ry="10" fill="#ff758f" stroke="#3b522e" stroke-width="2.2" />
+            </svg>
+            <div class="tag">Pop Mochi Cat 😮</div>
+        </div>
+        <h1>Pertanyaan 3/5 🍰</h1>
+        <p><strong>Lagi kepengen apa nih hari ini ?</strong></p>
+        <input type="text" id="q3" placeholder="Misal: Matcha, seblak, tas, dll..." />
+        <button type="button" class="btn" onclick="nextQ('q3', 's4d')">Lanjut ➡️</button>
+    </div>
+
+    <!-- TAMPILAN 4D -->
+    <div class="card" id="s4d">
+        <div class="badge">🎁 QNA 4 / 5</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <circle cx="37" cy="53" r="5" fill="#3b522e" />
+                <circle cx="63" cy="53" r="5" fill="#3b522e" />
+                <path d="M35,60 L33,73" stroke="#4cc9f0" stroke-width="3" stroke-linecap="round" />
+                <path d="M65,60 L67,73" stroke="#4cc9f0" stroke-width="3" stroke-linecap="round" />
+                <path d="M44,67 Q50,62 56,67" fill="none" stroke="#3b522e" stroke-width="2.5" />
+            </svg>
+            <div class="tag">Plis Mauu 🥺</div>
+        </div>
+        <h1>Pertanyaan 4/5 🎁</h1>
+        <p><strong>Ini kado pertama dari aku, mau lagi ?</strong></p>
+        <div class="runaway">
+            <button type="button" class="btn" style="z-index:10;" onclick="pilihMau()">Mau! 💚</button>
+            <button type="button" class="btn" id="btn-no" onmouseover="kabur()" ontouchstart="kabur()"
+                onclick="kabur()">Tidak 😝</button>
+        </div>
+    </div>
+
+    <!-- TAMPILAN 4E -->
+    <div class="card" id="s4e">
+        <div class="badge">⭐ QNA 5 / 5</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <rect x="25" y="46" width="21" height="12" rx="3" fill="#2b2b2b" />
+                <rect x="54" y="46" width="21" height="12" rx="3" fill="#2b2b2b" />
+                <line x1="46" y1="50" x2="54" y2="50" stroke="#2b2b2b" stroke-width="3" />
+                <path d="M43,66 Q50,73 57,66" fill="none" stroke="#3b522e" stroke-width="2.8" stroke-linecap="round" />
+            </svg>
+            <div class="tag">Sigma Mochi 😎</div>
+        </div>
+        <h1>Pertanyaan 5/5 ⭐</h1>
+        <p><strong>Seberapa happy kamu hari ini ? Rate 1 - 10</strong></p>
+        <input type="range" id="q5" min="1" max="10" value="10" style="width:100%;accent-color:#7aa363;"
+            oninput="document.getElementById('r-val').textContent=this.value" />
+        <div class="pill">Rating: <span id="r-val">10</span> / 10 🎉</div><br />
+        <button type="button" class="btn" id="btn-end" onclick="selesai()">Kirim Jawaban 🎊</button>
+    </div>
+
+    <!-- TAMPILAN 5 -->
+    <div class="card" id="s5">
+        <div class="badge">💚 SPECIAL MESSAGE 💚</div>
+        <div class="sticker">
+            <svg class="kucing" width="90" height="86" viewBox="0 0 100 95">
+                <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <text x="29" y="57" font-size="14">💚</text>
+                <text x="55" y="57" font-size="14">💚</text>
+                <path d="M42,65 Q50,74 58,65" fill="none" stroke="#3b522e" stroke-width="2.8" stroke-linecap="round" />
+            </svg>
+            <div class="tag">Luvv Bestie! 😽</div>
+        </div>
+        <h1>Happy birthday girrll 🥳🍵</h1>
+        <p style="font-weight:700;font-size:1.25rem;color:#5c8744;">From : Timikkk 💚🐾</p>
+        <div class="secret">✨ Semua jawabanmu sudah terkirim diam-diam ke <strong>Timikkk</strong>! Tunggu kejutan
+            selanjutnya yaa 🎁🐾</div>
+        <button type="button" class="btn" onclick="mulaiRider()">Lanjut ✨</button>
+    </div>
+
+    <!-- TAMBAHAN KARTU KUE, KUCING TOPI PESTA, LAYAR RIDER, STYLE & SCRIPT -->
+    <div class="card" id="s6">
+        <div class="badge">🎂 MAKE A WISH 🕯️</div>
+        <div class="sticker">
+            <svg width="110" height="105" viewBox="0 0 110 105">
+                <polygon points="27,42 33,14 49,32" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="83,42 77,14 61,32" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="31,38 35,21 45,32" fill="#ffb3c6" />
+                <polygon points="79,38 75,21 65,32" fill="#ffb3c6" />
+                <ellipse cx="55" cy="50" rx="31" ry="23" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <g id="wajah-normal">
+                    <path d="M40,46 Q45,40 50,46" fill="none" stroke="#3b522e" stroke-width="2.8"
+                        stroke-linecap="round" />
+                    <path d="M60,46 Q65,40 70,46" fill="none" stroke="#3b522e" stroke-width="2.8"
+                        stroke-linecap="round" />
+                    <path d="M49,54 Q55,60 61,54" fill="none" stroke="#3b522e" stroke-width="2.5" />
+                </g>
+                <g id="wajah-tiup" style="display:none;">
+                    <line x1="39" y1="45" x2="49" y2="48" stroke="#3b522e" stroke-width="2.8" stroke-linecap="round" />
+                    <line x1="71" y1="45" x2="61" y2="48" stroke="#3b522e" stroke-width="2.8" stroke-linecap="round" />
+                    <circle cx="55" cy="55" r="4" fill="#ff758f" stroke="#3b522e" stroke-width="2" />
+                </g>
+                <rect x="34" y="75" width="42" height="22" rx="6" fill="#ffd166" stroke="#3b522e" stroke-width="2.8" />
+                <path d="M34,83 Q41,88 48,83 Q55,88 62,83 Q69,88 76,83" fill="none" stroke="#fff" stroke-width="3.5"
+                    stroke-linecap="round" />
+                <ellipse cx="32" cy="84" rx="7" ry="5.5" fill="#fff" stroke="#3b522e" stroke-width="2.5" />
+                <ellipse cx="78" cy="84" rx="7" ry="5.5" fill="#fff" stroke="#3b522e" stroke-width="2.5" />
+                <rect x="52" y="62" width="6" height="13" rx="2" fill="#ff758f" stroke="#3b522e" stroke-width="2" />
+                <path id="api" class="api-lilin" d="M55,49 Q60,56 55,61 Q50,56 55,49 Z" fill="#ff9f1c" stroke="#e76f51"
+                    stroke-width="1.5" />
+                <path id="asap" class="asap-naik" d="M55,60 Q51,54 56,48 Q60,42 54,36" fill="none" stroke="#888"
+                    stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="tag">Tiup Lilinnya! 🕯️</div>
+        </div>
+        <h1 id="judul-kue">Make a Wish & Tiup Lilinnya! 🎂</h1>
+        <p>Tekan tombol <strong>Enter</strong> untuk meniup lilinnya bareng kucing ini!</p>
+        <button type="button" class="btn" id="btn-tiup" onclick="tiupLilin()">Enter ↵ (Tiup Lilin)</button>
+    </div>
+
+    <div class="card" id="s7">
+        <div class="badge">🥳 HAPPY ENDING 🐾</div>
+        <div class="sticker">
+            <svg class="kucing" width="110" height="105" viewBox="0 0 110 105">
+                <polygon points="43,30 55,6 67,30" fill="#7aa363" stroke="#3b522e" stroke-width="2.5" />
+                <line x1="47" y1="22" x2="63" y2="22" stroke="#ffd166" stroke-width="3" />
+                <circle cx="55" cy="6" r="4" fill="#ff758f" stroke="#3b522e" stroke-width="1.5" />
+                <polygon points="27,44 33,18 49,34" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <polygon points="83,44 77,18 61,34" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="55" cy="54" rx="30" ry="23" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <ellipse cx="37" cy="58" rx="5.5" ry="3" fill="#ff9ebb" />
+                <ellipse cx="73" cy="58" rx="5.5" ry="3" fill="#ff9ebb" />
+                <circle cx="43" cy="50" r="4.5" fill="#3b522e" />
+                <circle cx="41.5" cy="48.5" r="1.5" fill="#fff" />
+                <circle cx="67" cy="50" r="4.5" fill="#3b522e" />
+                <circle cx="65.5" cy="48.5" r="1.5" fill="#fff" />
+                <path d="M49,58 Q55,64 61,58" fill="none" stroke="#3b522e" stroke-width="2.8" stroke-linecap="round" />
+                <path d="M35,76 Q35,98 55,98 Q75,98 75,76" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                <g class="tangan-lambai">
+                    <ellipse cx="86" cy="66" rx="8" ry="12" transform="rotate(25 86 66)" fill="#fff" stroke="#3b522e"
+                        stroke-width="2.8" />
+                </g>
+            </svg>
+            <div class="tag">Byeee Bestie! 👋</div>
+        </div>
+        <div class="final-msg" id="teks-final"></div>
+        <p id="from-final" style="font-weight:700;font-size:1.15rem;color:#5c8744;opacity:0;transition:opacity 1.2s;">
+            From : Timik ( 2026 ) 💚🐾
+        </p>
+        <button type="button" class="btn" onclick="location.reload()">Main Lagi 🔄</button>
+    </div>
+
+    <div id="rider-screen">
+        <div id="rider-welcome-row"
+            style="display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;">
+            <div id="rider-text"></div>
+            <div id="rider-cat-badge"
+                style="display:none; background:#142214; border:2px solid #a8e68c; border-radius:18px; padding:8px; box-shadow:0 0 14px rgba(168,230,140,0.4);">
+                <svg class="kucing" width="62" height="60" viewBox="0 0 100 95">
+                    <polygon points="22,45 28,16 46,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                    <polygon points="78,45 72,16 54,35" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                    <polygon points="26,41 30,23 41,35" fill="#ffb3c6" />
+                    <polygon points="74,41 70,23 59,35" fill="#ffb3c6" />
+                    <ellipse cx="50" cy="58" rx="34" ry="28" fill="#fff" stroke="#3b522e" stroke-width="3" />
+                    <ellipse cx="30" cy="62" rx="6" ry="3.5" fill="#ff9ebb" />
+                    <ellipse cx="70" cy="62" rx="6" ry="3.5" fill="#ff9ebb" />
+                    <path d="M32,53 Q37,46 42,53" fill="none" stroke="#3b522e" stroke-width="3"
+                        stroke-linecap="round" />
+                    <path d="M58,53 Q63,46 68,53" fill="none" stroke="#3b522e" stroke-width="3"
+                        stroke-linecap="round" />
+                    <path d="M43,64 Q50,71 57,64" fill="none" stroke="#3b522e" stroke-width="2.8"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+
+        <div id="rider-pass-box" style="display:none; margin-top:18px;">
+            <input type="password" id="rider-pass-input" placeholder="Ketik password..."
+                style="background:#111a11; color:#a8e68c; border:2px solid #a8e68c; border-radius:10px; padding:10px 14px; font-family:'Courier New',monospace; font-size:1.1rem; text-align:center; outline:none; width:220px;" />
+            <div id="rider-error"
+                style="color:#ff758f; font-family:'Courier New',monospace; font-size:0.88rem; margin-top:8px; min-height:20px;">
+            </div>
+        </div>
+
+        <button type="button" id="btn-enter-rider" onclick="tekanEnterRider()">Enter ↵</button>
+    </div>
+
+    <style>
+        #rider-screen {
+            position: fixed;
+            inset: 0;
+            background: #070a07;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.4s ease;
+        }
+
+        #rider-screen.aktif {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #rider-text {
+            color: #a8e68c;
+            font-family: 'Courier New', monospace;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.7;
+            min-height: 45px;
+            max-width: 440px;
+            text-shadow: 0 0 10px rgba(168, 230, 140, 0.5);
+        }
+
+        .kursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: #a8e68c;
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: kelip 0.7s infinite;
+        }
+
+        @keyframes kelip {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        #btn-enter-rider {
+            margin-top: 20px;
+            background: #a8e68c;
+            color: #070a07;
+            border: 2px solid #a8e68c;
+            padding: 10px 28px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+        }
+
+        .api-lilin {
+            animation: goyangApi 0.5s infinite alternate;
+            transform-origin: 55px 60px;
+            transition: 0.4s;
+        }
+
+        @keyframes goyangApi {
+            0% {
+                transform: scale(1) rotate(-5deg);
+            }
+
+            100% {
+                transform: scale(1.15) rotate(5deg);
+            }
+        }
+
+        .api-padam {
+            opacity: 0 !important;
+            transform: scale(0) !important;
+        }
+
+        .asap-naik {
+            opacity: 0;
+            transition: 0.6s;
+        }
+
+        .asap-muncul {
+            opacity: 0.85 !important;
+            animation: naikAsap 1.6s forwards;
+        }
+
+        @keyframes naikAsap {
+            0% {
+                transform: translateY(0);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: translateY(-18px);
+                opacity: 0;
+            }
+        }
+
+        .tangan-lambai {
+            animation: lambai 0.7s infinite ease-in-out;
+            transform-origin: 82px 72px;
+        }
+
+        @keyframes lambai {
+
+            0%,
+            100% {
+                transform: rotate(-12deg);
+            }
+
+            50% {
+                transform: rotate(22deg);
+            }
+        }
+
+        .final-msg {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #2f4423;
+            min-height: 36px;
+            margin-bottom: 6px;
+        }
+    </style>
+
+    <script>
+        var tahapRider = 0, sedangNgetik = false;
+
+        function ketik(elId, teks, cb) {
+            sedangNgetik = true;
+            var el = document.getElementById(elId);
+            el.innerHTML = '<span id="ktk"></span><span class="kursor"></span>';
+            var sp = document.getElementById('ktk'), i = 0;
+            var t = setInterval(function () {
+                sp.textContent += teks.charAt(i);
+                i++;
+                if (i >= teks.length) {
+                    clearInterval(t);
+                    sedangNgetik = false;
+                    if (cb) cb();
+                }
+            }, 55);
+        }
+
+        function mulaiRider() {
+            if (document.activeElement) document.activeElement.blur();
+            tahapRider = 1;
+            var layar = document.getElementById('rider-screen');
+            var btn = document.getElementById('btn-enter-rider');
+            document.getElementById('rider-text').innerHTML = '';
+            document.getElementById('rider-cat-badge').style.display = 'none';
+            document.getElementById('rider-pass-box').style.display = 'none';
+            document.getElementById('rider-pass-input').value = '';
+            document.getElementById('rider-error').textContent = '';
+            btn.style.display = 'none';
+            layar.classList.add('aktif');
+
+            setTimeout(function () {
+                ketik('rider-text', 'Haii....... kamu memasuki server Rider.', function () {
+                    btn.style.display = 'inline-block';
+                    btn.focus();
+                });
+            }, 1400);
+        }
+
+        function tekanEnterRider() {
+            if (sedangNgetik) return;
+            var btn = document.getElementById('btn-enter-rider');
+            var txt = document.getElementById('rider-text');
+            var passBox = document.getElementById('rider-pass-box');
+            var passIn = document.getElementById('rider-pass-input');
+            var errEl = document.getElementById('rider-error');
+            var catBadge = document.getElementById('rider-cat-badge');
+
+            if (tahapRider === 1) {
+                tahapRider = 2;
+                btn.style.display = 'none';
+                txt.innerHTML = '';
+                setTimeout(function () {
+                    ketik('rider-text', 'Apakah kamu punya ijin?', function () {
+                        btn.style.display = 'inline-block';
+                        btn.focus();
+                    });
+                }, 800);
+            } else if (tahapRider === 2) {
+                tahapRider = 3;
+                btn.style.display = 'none';
+                txt.innerHTML = '';
+                setTimeout(function () {
+                    ketik('rider-text', 'Enter password :', function () {
+                        passBox.style.display = 'block';
+                        btn.style.display = 'inline-block';
+                        passIn.focus();
+                    });
+                }, 800);
+            } else if (tahapRider === 3) {
+                if (passIn.value.trim() !== '26112006') {
+                    errEl.textContent = 'Akses ditolak! Tanya ke Timik dulu yaa 😝';
+                    passIn.value = '';
+                    passIn.focus();
+                    return;
+                }
+                tahapRider = 4;
+                errEl.textContent = '';
+                passBox.style.display = 'none';
+                btn.style.display = 'none';
+                txt.innerHTML = '';
+                setTimeout(function () {
+                    catBadge.style.display = 'inline-block';
+                    ketik('rider-text', 'Welcome, Neila Fatikh Az Zahra', function () {
+                        btn.style.display = 'inline-block';
+                        btn.focus();
+                    });
+                }, 900);
+            } else if (tahapRider === 4) {
+                tahapRider = 5;
+                catBadge.style.display = 'none';
+                btn.style.display = 'none';
+                txt.innerHTML = '';
+                setTimeout(function () {
+                    show('s6');
+                    document.getElementById('rider-screen').classList.remove('aktif');
+                    var btnTiup = document.getElementById('btn-tiup');
+                    if (btnTiup) btnTiup.focus();
+                }, 1200);
+            }
+        }
+
+        function tiupLilin() {
+            var btn = document.getElementById('btn-tiup');
+            if (btn.disabled) return;
+            btn.disabled = true;
+            document.getElementById('wajah-normal').style.display = 'none';
+            document.getElementById('wajah-tiup').style.display = 'block';
+            setTimeout(function () {
+                document.getElementById('api').classList.add('api-padam');
+                document.getElementById('asap').classList.add('asap-muncul');
+                document.getElementById('judul-kue').textContent = 'Yeayy!! Lilinnya padam! 🌬️✨';
+            }, 600);
+            setTimeout(function () {
+                show('s7');
+                ketik('teks-final', 'Have a good day', function () {
+                    document.getElementById('from-final').style.opacity = '1';
+                });
+            }, 2200);
+        }
+
+        window.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var riderAktif = document.getElementById('rider-screen').classList.contains('aktif');
+                var kueAktif = document.getElementById('s6') && document.getElementById('s6').classList.contains('active');
+                if (riderAktif) {
+                    e.preventDefault();
+                    tekanEnterRider();
+                } else if (kueAktif) {
+                    e.preventDefault();
+                    tiupLilin();
+                }
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>
